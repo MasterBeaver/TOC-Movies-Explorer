@@ -18,11 +18,13 @@ MOVIES_FILE = os.getenv("MOVIES_FILE", "movies.json")
 app = FastAPI(title=APP_TITLE)
 
 # Allow your Next.js frontend (localhost:3000) to call FastAPI (localhost:8000)
+# and the deployed frontend on Render
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://toc-movies-explorer.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
