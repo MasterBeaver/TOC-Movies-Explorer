@@ -17,9 +17,11 @@ MOVIES_FILE = os.getenv("MOVIES_FILE", "movies.json")
 
 app = FastAPI(title=APP_TITLE)
 
-# Ensure data file exists and populate cache immediately on startup
-# (this will auto-run merge_movies if the file is missing)
-load_movies()
+# ensure movies are loaded (and seeded when missing) on application startup
+@app.on_event("startup")
+def _startup_load_data():
+    # calling load_movies here avoids referencing it before it's defined
+    load_movies()
 
 # Allow your Next.js frontend (localhost:3000) to call FastAPI (localhost:8000)
 # and the deployed frontend on Render
