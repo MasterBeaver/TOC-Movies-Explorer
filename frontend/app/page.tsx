@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE?.trim() || "http://127.0.0.1:8000";
+  process.env.NEXT_PUBLIC_API_BASE?.trim() || "https://toc-movies-explorer.onrender.com";
 const GITHUB_REPO =
   process.env.NEXT_PUBLIC_GITHUB_REPO?.trim() ||
   "https://github.com/Captaingit386/TOC-Movies-Explorer";
