@@ -17,6 +17,10 @@ MOVIES_FILE = os.getenv("MOVIES_FILE", "movies.json")
 
 app = FastAPI(title=APP_TITLE)
 
+# Ensure data file exists and populate cache immediately on startup
+# (this will auto-run merge_movies if the file is missing)
+load_movies()
+
 # Allow your Next.js frontend (localhost:3000) to call FastAPI (localhost:8000)
 # and the deployed frontend on Render
 app.add_middleware(
@@ -38,6 +42,21 @@ def load_movies() -> List[Dict[str, Any]]:
     global _MOVIES
     if _MOVIES:
         return _MOVIES
+
+    # If the file does not exist yet, try seeding it using the
+    # helper script bundled with the repo. This allows a fresh
+    # checkout or container to automatically generate movies.json
+    # on the first API call.
+    if not os.path.exists(MOVIES_FILE):
+        try:
+            # import locally so that running the API does not require
+            # the merge script unless seeding is needed
+            from merge_movies import main as _merge_main
+
+            _merge_main()
+        except Exception:
+            # ignore failures, we'll just return empty list below
+            pass
 
     if not os.path.exists(MOVIES_FILE):
         _MOVIES = []
