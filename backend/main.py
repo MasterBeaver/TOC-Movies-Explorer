@@ -21,13 +21,13 @@ app = FastAPI(title=APP_TITLE)
 # and the deployed frontend on Render
 app.add_middleware(
     CORSMiddleware,
-    # allow all origins so preflight OPTIONS requests never fail
-    allow_origins=["*"],
+    allow_origins=[
+        "https://toc-movies-explorer.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # -----------------------------
 # Load data (in-memory cache)
 # -----------------------------
